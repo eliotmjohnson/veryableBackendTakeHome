@@ -16,7 +16,8 @@ operatorsRouter
 		    const operator = await getOperator(operatorId);
 
 		    return res.status(200).json(operator);
-	})
+		}
+	)
     .post(
         "/"
         , async (req, res) => {
@@ -46,7 +47,7 @@ operatorsRouter
 			    }
 			} catch (error) {
 				console.log(error);
-				
+
 				return res.status(400).send(error);
 		    }
 		}
