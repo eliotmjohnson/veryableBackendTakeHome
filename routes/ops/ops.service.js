@@ -30,6 +30,25 @@ const createOp = async ({
     ]);
 };
 
+const deleteOp = async (opId) => {
+    const isOp = await query(`
+        SELECT *
+        FROM ops
+        WHERE id = ${opId}
+    `);
+
+    if (isOp.length !== 0) {
+        const text = `
+        DELETE FROM ops
+        WHERE id = $1;
+        `;
+
+        await query(text, [opId]);
+    } else {
+        throw new Error("Op does not exist");
+    }
+};
+
 // For my own personal testing and reference
 
 const getAllOps = async () => {
@@ -44,4 +63,5 @@ const getAllOps = async () => {
 module.exports = {
     createOp
     , getAllOps
+    , deleteOp
 };

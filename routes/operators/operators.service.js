@@ -23,31 +23,27 @@ const createOperator = async ({ firstName, lastName }) => {
 	await query(text, [firstName, lastName]);
 };
 
-const getOperatorSchedule = async (operatorId) => {
-	const text = `
-        SELECT businesses.businessName
-            , ops.opTitle
-            , ops.opPay as pay
-            , ops.startTime
-            , ops.endTime
-            , businesses.hqAddressLine1 as addressLine1
-            , businesses.hqAddressLine2 as addressLine2
-            , businesses.hqCity as city
-            , businesses.hqState as state
-            , businesses.hqZipcode as zip
-        FROM ops
-        INNER JOIN businesses
-        ON ops.businessId = businesses.id
-        WHERE operatorId = $1;
-    `;
+const deleteOperator = async (operatorId) => {
+    const isOperator = await query(`
+        SELECT *
+        FROM operators
+        WHERE id = ${operatorId}
+    `);
 
-	const schedule = await query(text, [operatorId]);
+    if (isOperator.length !== 0) {
+        const text = `
+        DELETE FROM operators
+        WHERE id = $1;
+        `;
 
-	return schedule;
+        await query(text, [operatorId]);
+    } else {
+        throw new Error("Operator does not exist");
+    }
 };
 
 module.exports = {
     getOperator
     , createOperator
-    , getOperatorSchedule
+    , deleteOperator
 };

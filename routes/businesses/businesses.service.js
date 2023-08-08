@@ -44,7 +44,27 @@ const getBusinesses = async () => {
     return businesses;
 }; 
 
+const deleteBusiness = async (businessId) => {
+    const isBusiness = await query(`
+        SELECT *
+        FROM businesses
+        WHERE id = ${businessId}
+    `);
+
+    if (isBusiness.length !== 0) {
+        const text = `
+        DELETE FROM businesses
+        WHERE id = $1;
+        `;
+
+        await query(text, [businessId]);
+    } else {
+        throw new Error("Business does not exist");
+    }
+};
+
 module.exports = {
     createBusiness
     , getBusinesses
+    , deleteBusiness
 };
