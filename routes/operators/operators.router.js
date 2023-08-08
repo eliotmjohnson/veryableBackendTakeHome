@@ -44,10 +44,10 @@ operatorsRouter
 			    } else {
 				    return res.status(200).json(schedule);
 			    }
-		    } catch (error) {
+			} catch (error) {
 				console.log(error);
 				
-			    return res.status(400).send(error);
+				return res.status(400).send(error);
 		    }
 		}
 	);
